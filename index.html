@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d16">
+  <title>Deriv Pulse AI</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#080d16;color:#edf4ff;font:15px Arial,sans-serif}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .hidden{display:none!important}
+    .wrap{max-width:1100px;margin:auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #263349;padding:18px 24px}
+    .brand{font-weight:800;letter-spacing:1px}.brand span{color:#35e6a0}
+    .muted{color:#8b9bb2;font-size:13px;line-height:1.6}
+    .card{background:#101927;border:1px solid #263349;border-radius:14px;padding:22px}
+    .auth{max-width:420px;margin:55px auto}
+    h1{font-size:28px;margin:0 0 10px}
+    h2{font-size:18px}
+    label{display:block;color:#b8c5d8;font-size:13px;margin:16px 0 7px}
+    input,select{width:100%;padding:12px;background:#080d16;color:white;border:1px solid #33435a;border-radius:8px}
+    button{padding:12px 15px;background:#35e6a0;color:#07130f;border:0;border-radius:8px;font-weight:700}
+    .full{width:100%;margin-top:18px}
+    .link{background:none;color:#35e6a0;padding:8px}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .layout{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-top:16px}
+    .value{font-size:23px;font-weight:800;margin:14px 0 6px}
+    .chart{width:100%;height:270px;display:block}
+    .pill{display:inline-block;border:1px solid #34465e;border-radius:20px;padding:7px 10px;color:#b8c5d8;font-size:12px}
+    .notice{padding:12px;border:1px solid #64502b;color:#f5ca78;background:#241d12;border-radius:9px;font-size:12px;line-height:1.6;margin:18px 0}
+    @media(max-width:700px){.grid{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.wrap{padding:16px}.auth{margin:30px auto}header{padding:16px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">〽 DERIV PULSE <span>AI</span></div>
+    <span class="pill">EARLY ACCESS</span>
+  </header>
+
+  <main class="wrap">
+    <section id="authView" class="card auth">
+      <div class="muted" style="color:#35e6a0">MARKET INTELLIGENCE PLATFORM</div>
+      <h1 id="authTitle" style="margin-top:12px">Welcome back.</h1>
+      <p class="muted" id="authDescription">Sign in to your Deriv Pulse AI workspace.</p>
+      <form id="authForm">
+        <div id="nameField" class="hidden">
+          <label for="displayName">Display name</label>
+          <input id="displayName" autocomplete="name" placeholder="Your name">
+        </div>
+        <label for="email">Email address</label>
+        <input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" minlength="8" required placeholder="At least 8 characters">
+        <button class="full" id="submitButton" type="submit">Sign in</button>
+      </form>
+      <p id="authMessage" class="muted" role="status"></p>
+      <p class="muted" id="switchText">New here? <button class="link" id="switchMode" type="button">Create an account</button></p>
+      <button class="link" id="resetPassword" type="button">Forgot password?</button>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <div class="muted" style="color:#35e6a0">YOUR TRADING WORKSPACE</div>
+          <h1 style="margin-top:10px">Market overview</h1>
+          <p class="muted">Welcome, <span id="userEmail"></span></p>
+        </div>
+        <button id="signOut" type="button">Sign out</button>
+      </div>
+      <div class="notice">MARKET DATA NOT CONNECTED. No prices or signals are shown as live until the Deriv data connection is configured and verified.</div>
+      <div class="grid">
+        <div class="card"><div class="muted">DATA CONNECTION</div><div class="value">Offline</div><div class="muted">Awaiting setup</div></div>
+        <div class="card"><div class="muted">SIGNAL ENGINE</div><div class="value">Standby</div><div class="muted">Needs verified price data</div></div>
+        <div class="card"><div class="muted">ACCOUNT PLAN</div><div class="value">Free</div><div class="muted">Initial access</div></div>
+      </div>
+      <div class="layout">
+        <div class="card">
+          <h2>Candlestick chart</h2>
+          <label for="symbol">Market</label>
+          <select id="symbol"><option value="R_100">Volatility 100 Index</option><option value="R_75">Volatility 75 Index</option><option value="R_50">Volatility 50 Index</option><option value="1HZ100V">Volatility 100 (1s) Index</option></select>
+          <label for="timeframe">Timeframe</label>
+          <select id="timeframe"><option value="60">1 minute</option><option value="300">5 minutes</option><option value="900">15 minutes</option><option value="3600">1 hour</option></select>
+          <p class="muted">Chart will display real candles once the market-data integration is added.</p>
+          <div id="chart" class="muted" style="min-height:160px;display:grid;place-items:center;border:1px dashed #33435a;border-radius:10px">Waiting for verified market data</div>
+        </div>
+        <div class="card">
+          <h2>Pulse analysis</h2>
+          <div class="value">NO SIGNAL</div>
+          <p class="muted">Analysis is disabled until real price history is available.</p>
+          <hr style="border-color:#263349;margin:22px 0">
+          <p class="muted">Trend: awaiting data</p>
+          <p class="muted">Momentum: awaiting data</p>
+          <p class="muted">Execution: disabled</p>
+        </div>
+      </div>
+    </section>
+    <footer class="muted" style="padding:28px 0">Deriv Pulse AI is an independent project, not an official Deriv product. Market analysis is not financial advice; trading involves risk.</footer>
+  </main>
+
+  <script>
+    // Authentication will be connected to Supabase in the next setup step.
+    // Do not treat a client-side login simulation as secure authentication.
+    const authView = document.getElementById("authView");
+    const dashboard = document.getElementById("dashboard");
+    const authForm = document.getElementById("authForm");
+    const authTitle = document.getElementById("authTitle");
+    const authDescription = document.getElementById("authDescription");
+    const submitButton = document.getElementById("submitButton");
+    const nameField = document.getElementById("nameField");
+    const switchText = document.getElementById("switchText");
+    const authMessage = document.getElementById("authMessage");
+    let mode = "login";
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      const registering = mode === "signup";
+      authTitle.textContent = registering ? "Create your account." : "Welcome back.";
+      authDescription.textContent = registering ? "Register for your own trading workspace." : "Sign in to your Deriv Pulse AI workspace.";
+      submitButton.textContent = registering ? "Create account" : "Sign in";
+      nameField.classList.toggle("hidden", !registering);
+      document.getElementById("displayName").required = registering;
+      switchText.firstChild.textContent = registering ? "Already registered? " : "New here? ";
+      document.getElementById("switchMode").textContent = registering ? "Sign in" : "Create an account";
+      authMessage.textContent = "";
+    }
+
+    document.getElementById("switchMode").addEventListener("click", () => setMode(mode === "login" ? "signup" : "login"));
+
+    authForm.addEventListener("submit", event => {
+      event.preventDefault();
+      authMessage.textContent = "Authentication isn't connected yet. Next we'll connect Supabase securely; no account has been created.";
+    });
+
+    document.getElementById("resetPassword").addEventListener("click", () => {
+      authMessage.textContent = "Password recovery will be enabled after Supabase authentication is connected.";
+    });
+  </script>
+</body>
+</html>
